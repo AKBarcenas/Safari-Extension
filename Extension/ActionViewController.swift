@@ -10,7 +10,7 @@ import UIKit
 import MobileCoreServices
 
 class ActionViewController: UIViewController {
-
+    // The text area the user can enter in JavaScript.
     @IBOutlet weak var script: UITextView!
     // The web page title.
     var pageTitle = ""
@@ -20,8 +20,7 @@ class ActionViewController: UIViewController {
     /*
      * Function Name: viewDidLoad
      * Parameters: None
-     * Purpose: This method sets up the visual environment of the game and starts the game by creating
-     *   enemies after a time delay.
+     * Purpose: This method processes all of the JavaScript that is being read in from the web page.
      * Return Value: None
      */
     
@@ -29,6 +28,10 @@ class ActionViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(done))
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIKeyboardWillChangeFrameNotification, object: nil)
         
         if let inputItem = extensionContext!.inputItems.first as? NSExtensionItem {
             if let itemProvider = inputItem.attachments?.first as? NSItemProvider {
@@ -66,6 +69,31 @@ class ActionViewController: UIViewController {
         item.attachments = [customJavaScript]
         
         extensionContext!.completeRequestReturningItems([item], completionHandler: nil)
+    }
+    
+    /*
+     * Function Name: adjustForKeyboard
+     * Parameters: notification - information about the notification that called this method.
+     * Purpose: This method adjusts the text view when the user brings up or manipulates the shape of the keyboard.
+     * Return Value: None
+     */
+    
+    func adjustForKeyboard(notification: NSNotification) {
+        let userInfo = notification.userInfo!
+        
+        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
+        
+        if notification.name == UIKeyboardWillHideNotification {
+            script.contentInset = UIEdgeInsetsZero
+        } else {
+            script.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height, right: 0)
+        }
+        
+        script.scrollIndicatorInsets = script.contentInset
+        
+        let selectedRange = script.selectedRange
+        script.scrollRangeToVisible(selectedRange)
     }
 
 }
