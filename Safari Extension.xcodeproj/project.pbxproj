@@ -15,6 +15,7 @@
 		FACB3D1F1D17D341008DC009 /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB3D1E1D17D341008DC009 /* ActionViewController.swift */; };
 		FACB3D221D17D341008DC009 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FACB3D201D17D341008DC009 /* MainInterface.storyboard */; };
 		FACB3D261D17D341008DC009 /* Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FACB3D1C1D17D341008DC009 /* Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FACB3D2C1D17EAD5008DC009 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = FACB3D2B1D17EAD5008DC009 /* Action.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		FACB3D1E1D17D341008DC009 /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
 		FACB3D211D17D341008DC009 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		FACB3D231D17D341008DC009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FACB3D2B1D17EAD5008DC009 /* Action.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				FACB3D1E1D17D341008DC009 /* ActionViewController.swift */,
 				FACB3D201D17D341008DC009 /* MainInterface.storyboard */,
 				FACB3D231D17D341008DC009 /* Info.plist */,
+				FACB3D2B1D17EAD5008DC009 /* Action.js */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FACB3D2C1D17EAD5008DC009 /* Action.js in Resources */,
 				FACB3D221D17D341008DC009 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
