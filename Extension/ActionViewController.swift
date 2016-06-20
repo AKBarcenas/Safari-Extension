@@ -11,17 +11,37 @@ import MobileCoreServices
 
 class ActionViewController: UIViewController {
 
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var script: UITextView!
+    // The web page title.
+    var pageTitle = ""
+    // The web page url.
+    var pageURL = ""
 
+    /*
+     * Function Name: viewDidLoad
+     * Parameters: None
+     * Purpose: This method sets up the visual environment of the game and starts the game by creating
+     *   enemies after a time delay.
+     * Return Value: None
+     */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(done))
         
         if let inputItem = extensionContext!.inputItems.first as? NSExtensionItem {
             if let itemProvider = inputItem.attachments?.first as? NSItemProvider {
                 itemProvider.loadItemForTypeIdentifier(kUTTypePropertyList as String, options: nil) { [unowned self] (dict, error) in
                     let itemDictionary = dict as! NSDictionary
                     let javaScriptValues = itemDictionary[NSExtensionJavaScriptPreprocessingResultsKey] as! NSDictionary
-                    print(javaScriptValues)
+                    
+                    self.pageTitle = javaScriptValues["title"] as! String
+                    self.pageURL = javaScriptValues["URL"] as! String
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.title = self.pageTitle
+                    }
                 }
             }
         }
@@ -32,10 +52,20 @@ class ActionViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    /*
+     * Function Name: done
+     * Parameters: None
+     * Purpose: This method sends back to Safari.
+     * Return Value: None
+     */
+    
     @IBAction func done() {
-        // Return any edited content to the host app.
-        // This template doesn't do anything, so we just echo the passed in items.
-        self.extensionContext!.completeRequestReturningItems(self.extensionContext!.inputItems, completionHandler: nil)
+        let item = NSExtensionItem()
+        let webDictionary = [NSExtensionJavaScriptFinalizeArgumentKey: ["customJavaScript": script.text]]
+        let customJavaScript = NSItemProvider(item: webDictionary, typeIdentifier: kUTTypePropertyList as String)
+        item.attachments = [customJavaScript]
+        
+        extensionContext!.completeRequestReturningItems([item], completionHandler: nil)
     }
 
 }
